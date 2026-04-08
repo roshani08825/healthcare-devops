@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Healthcare Portal</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="dashboard-header">
+    <h1>Welcome, {{ username }} 👋</h1>
+    <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+  </header>
+
+  <main class="dashboard-container">
+    <a href="{{ url_for('book_appointment') }}" class="card-link">
+      <div class="card">
+        <h2>📅 Book Appointment</h2>
+        <p>Schedule a meeting with a doctor.</p>
+      </div>
+    </a>
+
+    <a href="{{ url_for('view_prescriptions') }}" class="card-link">
+      <div class="card">
+        <h2>💊 View Prescriptions</h2>
+        <p>Check your medical prescriptions.</p>
+      </div>
+    </a>
+
+    <a href="{{ url_for('view_appointments') }}" class="card-link">
+      <div class="card">
+        <h2>📋 My Appointments</h2>
+        <p>See your scheduled consultations.</p>
+      </div>
+    </a>
+
+    <a href="{{ url_for('view_profile') }}" class="card-link">
+      <div class="card">
+        <h2>👤 My Profile</h2>
+        <p>View and update your personal information.</p>
+      </div>
+    </a>
+
+    <a href="{{ url_for('contact_doctor') }}" class="card-link">
+      <div class="card">
+        <h2>👨‍⚕️ Contact Doctor</h2>
+        <p>Chat or message your healthcare provider.</p>
+      </div>
+    </a>
+  </main>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Prescriptions - Healthcare Portal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="dashboard-header">
+        <h1>💊 My Prescriptions</h1>
+        <div>
+            <a href="{{ url_for('add_prescription') }}" class="btn" style="margin-right: 15px;">+ Add Prescription</a>
+            <a href="{{ url_for('dashboard') }}" class="logout-btn">Back to Dashboard</a>
+        </div>
+    </header>
+
+    <main class="container">
+        {% if prescriptions %}
+            <div class="prescriptions-list">
+                {% for prescription in prescriptions %}
+                <div class="prescription-card">
+                    <div class="prescription-header">
+                        <h3>{{ prescription[3] }} • {{ prescription[4] }}</h3>
+                        <span class="status {{ prescription[9].lower() }}">{{ prescription[9] }}</span>
+                    </div>
+                    
+                    <div class="prescription-details">
+                        <div class="detail-row">
+                            <span class="label">Patient:</span>
+                            <span class="value">{{ prescription[2] }}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="label">Doctor:</span>
+                            <span class="value">{{ prescription[3] }}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="label">Medication:</span>
+                            <span class="value">{{ prescription[4] }}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="label">Dosage:</span>
+                            <span class="value">{{ prescription[5] }}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="label">Frequency:</span>
+                            <span class="value">{{ prescription[6] }}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="label">Duration:</span>
+                            <span class="value">{{ prescription[7] }}</span>
+                        </div>
+                        {% if prescription[8] %}
+                        <div class="detail-row">
+                            <span class="label">Instructions:</span>
+                            <span class="value">{{ prescription[8] }}</span>
+                        </div>
+                        {% endif %}
+                        <div class="detail-row">
+                            <span class="label">Date Prescribed:</span>
+                            <span class="value">{{ prescription[9] }}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="prescription-actions">
+                        <a href="{{ url_for('delete_prescription', prescription_id=prescription[0]) }}" 
+                           class="btn-danger" 
+                           onclick="return confirm('Are you sure you want to delete this prescription?')">
+                            Delete
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <h2>No prescriptions found</h2>
+                <p>You don't have any prescriptions yet.</p>
+                <a href="{{ url_for('add_prescription') }}" class="btn">Add Your First Prescription</a>
+            </div>
+        {% endif %}
+    </main>
+</body>
+</html>

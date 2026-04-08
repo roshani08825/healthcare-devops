@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MediConnect</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+  <header>
+    <nav>
+      <h1 class="logo">MediConnect</h1>
+      <ul>
+        <li><a href="{{ url_for('home') }}" class="active">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="{{ url_for('login') }}">Login</a></li>
+        <li><a href="{{ url_for('register') }}">Register</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-content">
+      <h2>Your Health, Our Priority</h2>
+      <p>Connecting rural communities with digital healthcare access and awareness.</p>
+      <button onclick="window.location.href='/register'">Get Started</button>
+    </div>
+  </section>
+
+  <section id="about" class="section">
+    <h2>About Us</h2>
+    <p>
+      MediConnect aims to provide medical awareness, access to resources, and support
+      for rural areas through an easy-to-use online platform.
+    </p>
+  </section>
+
+  <section id="services" class="section">
+    <h2>Our Services</h2>
+    <div class="card-container">
+      <div class="card">
+        <h3>Health Tips</h3>
+        <p>Daily wellness advice and health tips for a better lifestyle.</p>
+      </div>
+      <div class="card">
+        <h3>Awareness Programs</h3>
+        <p>Online sessions and materials to promote healthcare education.</p>
+      </div>
+      <div class="card">
+        <h3>Support</h3>
+        <p>Connect with experts for guidance on healthcare needs.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="section contact">
+    <h2>Contact Us</h2>
+    <p>Email: support@healthcareportal.com</p>
+    <p>Phone: +91 98765 43210</p>
+  </section>
+
+  <footer>
+    <p>© 2025 MediConnect | All Rights Reserved</p>
+  </footer>
+</body>
+</html>

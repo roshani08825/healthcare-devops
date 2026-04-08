@@ -1,0 +1,1060 @@
+body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  background-color: #f8f9fa;
+  color: #333;
+}
+
+header {
+  background-color: #0077b6;
+  color: white;
+  padding: 15px 0;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+  margin: auto;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+nav ul li a.active,
+nav ul li a:hover {
+  text-decoration: underline;
+}
+
+.hero {
+  background: linear-gradient(rgba(0, 119, 182, 0.6), rgba(0, 119, 182, 0.6)), url('https://images.unsplash.com/photo-1588776814546-4879ae3bcded') no-repeat center center/cover;
+  color: white;
+  text-align: center;
+  padding: 120px 20px;
+}
+
+.hero h2 {
+  font-size: 2.5em;
+  margin-bottom: 10px;
+}
+
+.hero p {
+  font-size: 1.1em;
+  margin-bottom: 20px;
+}
+
+.hero button {
+  padding: 12px 25px;
+  font-size: 1em;
+  border: none;
+  border-radius: 25px;
+  background-color: #00b4d8;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.hero button:hover {
+  background-color: #90e0ef;
+  color: #023e8a;
+}
+
+.section {
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.card-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 25px;
+  margin-top: 20px;
+}
+
+.card {
+  background-color: white;
+  width: 280px;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  transition: transform 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.contact p {
+  margin: 10px 0;
+  font-size: 1.1em;
+}
+
+footer {
+  background-color: #023e8a;
+  color: white;
+  text-align: center;
+  padding: 15px 0;
+}
+
+.form-container {
+  width: 350px;
+  margin: 80px auto;
+  background-color: white;
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+  text-align: center;
+}
+
+.form-container input {
+  width: 90%;
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.form-container button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background-color: #0077b6;
+  color: white;
+  font-size: 1em;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.form-container button:hover {
+  background-color: #00b4d8;
+}
+
+#error-message {
+  color: red;
+  margin-top: 10px;
+}
+
+.logout-btn {
+  padding: 8px 18px;
+  background-color: #00b4d8;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.9em;
+  transition: 0.3s;
+}
+
+.logout-btn:hover {
+  background-color: #0077b6;
+  color: #fff;
+}
+.flash-message {
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+  text-align: center;
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+/* Dashboard styles */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #00b4d8;
+  color: white;
+  padding: 15px 30px;
+  border-radius: 0 0 15px 15px;
+}
+
+.logout-btn {
+  background-color: white;
+  color: #0077b6;
+  padding: 8px 16px;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.logout-btn:hover {
+  background-color: #90e0ef;
+  color: #023e8a;
+}
+
+.dashboard-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 25px;
+  padding: 40px;
+}
+
+.dashboard-container .card {
+  width: 250px;
+  padding: 25px;
+  border-radius: 15px;
+  background: white;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+}
+
+.dashboard-container .card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+}
+
+.dashboard-container .card h2 {
+  color: #0077b6;
+  margin-bottom: 10px;
+}
+
+/* Book Appointment Button */
+.btn {
+  display: block;
+  width: 200px;
+  margin: 30px auto;
+  padding: 12px 20px;
+  background-color: #0077b6;
+  color: white;
+  text-decoration: none;
+  border: none;
+  border-radius: 8px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: 0.3s;
+  text-align: center;
+}
+
+.btn:hover {
+  background-color: #00b4d8;
+  transform: translateY(-2px);
+}
+
+/* Book Appointment Form Styles */
+.container {
+  max-width: 500px;
+  margin: 50px auto;
+  padding: 30px;
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+}
+
+.container h2 {
+  text-align: center;
+  color: #0077b6;
+  margin-bottom: 20px;
+}
+
+.container input,
+.container textarea {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.container textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.container button {
+  width: 100%;
+  padding: 12px;
+  background-color: #0077b6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: 0.3s;
+}
+
+.container button:hover {
+  background-color: #00b4d8;
+}
+
+.container a {
+  display: block;
+  text-align: center;
+  margin-top: 20px;
+  color: #0077b6;
+  text-decoration: none;
+}
+
+.container a:hover {
+  text-decoration: underline;
+}
+
+/* Quick Action Button */
+.quick-action {
+  text-align: center;
+  margin: 30px 0;
+}
+
+.quick-action-btn {
+  display: inline-block;
+  padding: 15px 30px;
+  background: linear-gradient(135deg, #0077b6, #00b4d8);
+  color: white;
+  text-decoration: none;
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 1.1em;
+  box-shadow: 0 4px 15px rgba(0, 119, 182, 0.3);
+  transition: all 0.3s ease;
+}
+
+.quick-action-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 119, 182, 0.4);
+  background: linear-gradient(135deg, #00b4d8, #0077b6);
+}
+/* Card Links */
+.card-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.dashboard-container .card {
+  width: 250px;
+  padding: 25px;
+  border-radius: 15px;
+  background: white;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+}
+
+.dashboard-container .card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+}
+
+.dashboard-container .card h2 {
+  color: #0077b6;
+  margin-bottom: 10px;
+}
+
+/* Prescriptions Styles */
+.prescriptions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.prescription-card {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border-left: 5px solid #0077b6;
+}
+
+.prescription-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.prescription-header h3 {
+    color: #0077b6;
+    margin: 0;
+}
+
+.status {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8em;
+    font-weight: 600;
+}
+
+.status.active {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.status.completed {
+    background-color: #e2e3e5;
+    color: #383d41;
+}
+
+.prescription-details {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.detail-row:last-child {
+    border-bottom: none;
+}
+
+.label {
+    font-weight: 600;
+    color: #555;
+}
+
+.value {
+    color: #333;
+}
+
+.prescription-actions {
+    margin-top: 20px;
+    text-align: right;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 0.9em;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.empty-state h2 {
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.empty-state p {
+    color: #888;
+    margin-bottom: 30px;
+}
+
+/* Prescription Form Styles */
+.prescription-form {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-row {
+    display: flex;
+    gap: 20px;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1em;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* Appointments Styles */
+.appointments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.appointment-card {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border-left: 5px solid #00b4d8;
+    transition: transform 0.3s ease;
+}
+
+.appointment-card:hover {
+    transform: translateY(-2px);
+}
+
+.appointment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.appointment-header h3 {
+    color: #0077b6;
+    margin: 0;
+    font-size: 1.3em;
+}
+
+.appointment-details {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.appointment-actions {
+    text-align: right;
+}
+
+/* Status Styles */
+.status {
+    padding: 6px 15px;
+    border-radius: 20px;
+    font-size: 0.8em;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.status.scheduled {
+    background-color: #d1ecf1;
+    color: #0c5460;
+}
+
+.status.completed {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.status.cancelled {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.status.confirmed {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+/* Flash Messages */
+.alert {
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 500;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+/* Profile Styles */
+.profile-card {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.profile-header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding-bottom: 30px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.profile-avatar {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #0077b6, #00b4d8);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2em;
+    color: white;
+    font-weight: bold;
+    margin: 0 auto 20px;
+}
+
+.profile-header h2 {
+    color: #333;
+    margin: 0 0 5px 0;
+    font-size: 1.8em;
+}
+
+.profile-email {
+    color: #666;
+    margin: 0;
+    font-size: 1.1em;
+}
+
+.profile-details {
+    display: grid;
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.detail-section h3 {
+    color: #0077b6;
+    margin-bottom: 20px;
+    font-size: 1.3em;
+}
+
+.profile-stats {
+    background: #f8f9fa;
+    padding: 25px;
+    border-radius: 15px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 15px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.stat-number {
+    display: block;
+    font-size: 1.8em;
+    font-weight: bold;
+    color: #0077b6;
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    color: #666;
+    font-size: 0.9em;
+}
+
+.profile-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #545b62;
+}
+
+/* Profile Form Styles */
+.profile-form {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.form-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.form-actions .btn {
+    min-width: 120px;
+}
+
+.form-group small {
+    display: block;
+    margin-top: 5px;
+    color: #666;
+    font-size: 0.8em;
+}
+
+/* Contact Doctor Styles */
+.contact-layout {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.doctors-section h2,
+.messages-section h2 {
+    color: #0077b6;
+    margin-bottom: 10px;
+}
+
+.section-description {
+    color: #666;
+    margin-bottom: 30px;
+    font-size: 1.1em;
+}
+
+/* Doctors Grid */
+.doctors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 25px;
+}
+
+.doctor-card {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.doctor-card:hover {
+    transform: translateY(-5px);
+}
+
+.doctor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.doctor-header h3 {
+    color: #333;
+    margin: 0;
+    font-size: 1.3em;
+}
+
+.specialty-badge {
+    background: #00b4d8;
+    color: white;
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 0.8em;
+    font-weight: 600;
+}
+
+.doctor-info {
+    margin-bottom: 20px;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    color: #555;
+}
+
+.info-item .icon {
+    margin-right: 10px;
+    font-size: 1.1em;
+}
+
+.doctor-bio {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.doctor-bio p {
+    margin: 0;
+    color: #666;
+    font-size: 0.95em;
+    line-height: 1.5;
+}
+
+.doctor-actions {
+    text-align: center;
+}
+
+/* Messages Section */
+.messages-section {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    height: fit-content;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.view-all-link {
+    color: #0077b6;
+    text-decoration: none;
+    font-size: 0.9em;
+}
+
+.view-all-link:hover {
+    text-decoration: underline;
+}
+
+.recent-messages {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.message-preview {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 10px;
+    border-left: 4px solid #00b4d8;
+}
+
+.message-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.message-header strong {
+    color: #333;
+    font-size: 0.9em;
+}
+
+.message-time {
+    color: #666;
+    font-size: 0.8em;
+}
+
+.message-subject {
+    font-weight: 600;
+    color: #0077b6;
+    margin: 0 0 5px 0;
+    font-size: 0.95em;
+}
+
+.message-excerpt {
+    color: #666;
+    margin: 0 0 8px 0;
+    font-size: 0.9em;
+    line-height: 1.4;
+}
+
+/* Message Form */
+.message-form-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.doctor-info-card {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+}
+
+.doctor-details h4 {
+    color: #333;
+    margin: 0 0 5px 0;
+    font-size: 1.4em;
+}
+
+.specialty {
+    color: #00b4d8;
+    font-weight: 600;
+    margin: 0 0 10px 0;
+}
+
+.contact-info {
+    color: #666;
+    margin: 0;
+}
+
+.message-form {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.form-note {
+    background: #e3f2fd;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 20px 0;
+    border-left: 4px solid #2196f3;
+}
+
+.form-note p {
+    margin: 0;
+    color: #1565c0;
+    font-size: 0.95em;
+}
+
+/* Message History */
+.messages-history {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.message-card {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border-left: 5px solid #00b4d8;
+}
+
+.message-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.message-info h3 {
+    color: #333;
+    margin: 0 0 5px 0;
+    font-size: 1.2em;
+}
+
+.message-subject {
+    color: #0077b6;
+    font-weight: 600;
+    margin: 0;
+}
+
+.message-meta {
+    text-align: right;
+}
+
+.message-time {
+    display: block;
+    color: #666;
+    font-size: 0.9em;
+    margin-bottom: 5px;
+}
+
+.message-content {
+    color: #333;
+    line-height: 1.6;
+}
+
+.message-content p {
+    margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .contact-layout {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .doctors-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+
+/* Ensure all dashboard cards are equal */
+.dashboard-container .card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.dashboard-container .card {
+    width: 250px;
+    height: 150px; /* Fixed height for consistency */
+    padding: 25px;
+    border-radius: 15px;
+    background: white;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.dashboard-container .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+}
+
+.dashboard-container .card h2 {
+    color: #0077b6;
+    margin-bottom: 10px;
+    font-size: 1.2em;
+}
+
+.dashboard-container .card p {
+    margin: 0;
+    color: #666;
+    font-size: 0.9em;
+}
