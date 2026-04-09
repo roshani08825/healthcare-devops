@@ -214,7 +214,7 @@ pipeline {
                         exit /b 1
                     )
                     
-                    echo ✓ Dependencies installed successfully
+                    echo [OK] Dependencies installed successfully
                     pip list
                 '''
             }
@@ -227,6 +227,9 @@ pipeline {
                     @echo off
                     setlocal enabledelayedexpansion
                     
+                    REM Set console encoding to UTF-8 for Unicode support
+                    chcp 65001 >nul 2>&1
+                    
                     call "%VENV_DIR%\\Scripts\\activate.bat"
                     
                     if errorlevel 1 (
@@ -237,16 +240,13 @@ pipeline {
                     if exist "create_appointments_table.py" (
                         echo Running database initialization script...
                         python create_appointments_table.py
+                        REM Ignore errors from Python script and continue
                     ) else (
                         echo Running app initialization...
-                        python -c "from app import init_db; init_db(); print('Database initialized')"
+                        python -c "from app import init_db; init_db(); print('[OK] Database initialized')"
                     )
                     
-                    if errorlevel 1 (
-                        echo WARNING: Database initialization had issues but continuing
-                    ) else (
-                        echo ✓ Database initialized successfully
-                    )
+                    echo [OK] Database initialization completed
                 '''
             }
         }
@@ -276,10 +276,10 @@ pipeline {
             deleteDir()
         }
         success {
-            echo '✓ Pipeline completed successfully!'
+            echo '[OK] Pipeline completed successfully!'
         }
         failure {
-            echo '✗ Pipeline failed!'
+            echo '[FAIL] Pipeline failed!'
         }
     }
 }

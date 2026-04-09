@@ -18,4 +18,4 @@ CREATE TABLE IF NOT EXISTS appointments (
 conn.commit()
 conn.close()
 
-print("✅ Table 'appointments' created successfully!")
+print("[OK] Table 'appointments' created successfully!")
