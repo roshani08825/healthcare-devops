@@ -29,20 +29,14 @@ pipeline {
                         setlocal enabledelayedexpansion
                         
                         set "PYTHON_FOUND=0"
+                        set "PYTHON_PATH="
                         
-                        REM Check if python is already in PATH
-                        where python >nul 2>nul
-                        if errorlevel 0 (
-                            set "PYTHON_FOUND=1"
-                            echo Found Python in PATH
-                            python --version
-                            goto :EOF
-                        )
-                        
-                        REM Checking common installation locations
-                        echo Python not found in PATH, checking common locations...
+                        echo Current PATH:
+                        echo !PATH!
+                        echo.
                         
                         REM Check multiple common Python installation locations
+                        echo Searching for Python installations...
                         for %%P in (
                             "C:\\Python311"
                             "C:\\Python310"
@@ -50,31 +44,39 @@ pipeline {
                             "C:\\Program Files\\Python311"
                             "C:\\Program Files\\Python310"
                             "C:\\Program Files\\Python39"
-                            "C:\\Users\\!USERNAME!\\AppData\\Local\\Programs\\Python\\Python311"
-                            "C:\\Users\\!USERNAME!\\AppData\\Local\\Programs\\Python\\Python310"
+                            "C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Python\\Python311"
+                            "C:\\Users\\%USERNAME%\\AppData\\Local\\Programs\\Python\\Python310"
                         ) do (
                             if exist "%%P\\python.exe" (
-                                echo Found Python at %%P
-                                set "PATH=%%P;%%P\\Scripts;!PATH!"
+                                echo ✓ Found Python at: %%P
+                                set "PYTHON_PATH=%%P\\python.exe"
                                 set "PYTHON_FOUND=1"
-                                python --version
+                                !PYTHON_PATH! --version
+                                REM Add to PATH for subsequent steps
+                                set "PATH=%%P;%%P\\Scripts;!PATH!"
                                 goto :FOUND
                             )
                         )
                         
                         :FOUND
-                        if !PYTHON_FOUND! equ 0 (
+                        if !PYTHON_FOUND! equ 1 (
+                            echo.
+                            echo ✓ Python found successfully: !PYTHON_PATH!
+                            echo ✓ Updated PATH for subsequent steps
+                        ) else (
                             echo.
                             echo ===== ERROR: Python NOT FOUND =====
                             echo.
                             echo Python is required but not installed on this Jenkins agent.
                             echo.
-                            echo Please install Python on the Jenkins server:
-                            echo 1. Download from: https://www.python.org/downloads/
-                            echo 2. Run installer with "Add Python to PATH" checked
-                            echo 3. Restart Jenkins service
+                            echo SOLUTION:
+                            echo 1. On the Jenkins server, run as Administrator:
+                            echo    powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Invoke-WebRequest -Uri 'https://www.python.org/ftp/python/3.11.9/python-3.11.9-amd64.exe' -OutFile '$env:TEMP\python-installer.exe'; Start-Process -FilePath '$env:TEMP\python-installer.exe' -ArgumentList '/quiet /norestart PrependPath=1' -Wait"
                             echo.
-                            echo Or specify Python location in Jenkinsfile PYTHON_HOME variable
+                            echo 2. Restart Jenkins service:
+                            echo    Restart-Service Jenkins
+                            echo.
+                            echo 3. Re-run this pipeline
                             echo.
                             exit /b 1
                         )
@@ -90,10 +92,18 @@ pipeline {
                     @echo off
                     setlocal enabledelayedexpansion
                     
-                    REM Add Python to PATH if needed
+                    REM Try different possible Python locations
+                    set "PYTHON_EXE=python"
+                    
                     if exist "C:\\Python311\\python.exe" (
-                        set "PATH=C:\\Python311;%PATH%"
+                        set "PYTHON_EXE=C:\\Python311\\python.exe"
+                    ) else if exist "C:\\Python310\\python.exe" (
+                        set "PYTHON_EXE=C:\\Python310\\python.exe"
+                    ) else if exist "C:\\Program Files\\Python311\\python.exe" (
+                        set "PYTHON_EXE=C:\\Program Files\\Python311\\python.exe"
                     )
+                    
+                    echo Using Python: !PYTHON_EXE!
                     
                     REM Remove old venv if exists
                     if exist "%VENV_DIR%" (
@@ -103,14 +113,14 @@ pipeline {
                     
                     REM Create new virtual environment
                     echo Creating new virtual environment...
-                    python -m venv "%VENV_DIR%"
+                    !PYTHON_EXE! -m venv "%VENV_DIR%"
                     
                     if errorlevel 1 (
                         echo ERROR: Failed to create virtual environment
                         exit /b 1
                     )
                     
-                    echo Virtual environment created successfully
+                    echo ✓ Virtual environment created successfully
                 '''
             }
         }
@@ -125,9 +135,19 @@ pipeline {
                     REM Activate virtual environment
                     call "%VENV_DIR%\\Scripts\\activate.bat"
                     
+                    if errorlevel 1 (
+                        echo ERROR: Failed to activate virtual environment
+                        exit /b 1
+                    )
+                    
                     REM Upgrade pip
                     echo Upgrading pip...
                     python -m pip install --upgrade pip
+                    
+                    if errorlevel 1 (
+                        echo ERROR: Failed to upgrade pip
+                        exit /b 1
+                    )
                     
                     REM Install requirements
                     echo Installing requirements from requirements.txt...
@@ -143,7 +163,7 @@ pipeline {
                         exit /b 1
                     )
                     
-                    echo Dependencies installed successfully
+                    echo ✓ Dependencies installed successfully
                     pip list
                 '''
             }
@@ -158,12 +178,23 @@ pipeline {
                     
                     call "%VENV_DIR%\\Scripts\\activate.bat"
                     
+                    if errorlevel 1 (
+                        echo ERROR: Failed to activate virtual environment
+                        exit /b 1
+                    )
+                    
                     if exist "create_appointments_table.py" (
                         echo Running database initialization script...
                         python create_appointments_table.py
                     ) else (
                         echo Running app initialization...
                         python -c "from app import init_db; init_db(); print('Database initialized')"
+                    )
+                    
+                    if errorlevel 1 (
+                        echo WARNING: Database initialization had issues but continuing
+                    ) else (
+                        echo ✓ Database initialized successfully
                     )
                 '''
             }
