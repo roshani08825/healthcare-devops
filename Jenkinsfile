@@ -154,7 +154,7 @@ pipeline {
                     )
                     
                     echo Using Python: !PYTHON_EXE!
-                    !PYTHON_EXE! --version
+                    "!PYTHON_EXE!" --version
                     
                     REM Remove old venv if exists
                     if exist "%VENV_DIR%" (
@@ -164,7 +164,7 @@ pipeline {
                     
                     REM Create new virtual environment
                     echo Creating new virtual environment...
-                    !PYTHON_EXE! -m venv "%VENV_DIR%"
+                    "!PYTHON_EXE!" -m venv "%VENV_DIR%"
                     
                     if errorlevel 1 (
                         echo ERROR: Failed to create virtual environment
