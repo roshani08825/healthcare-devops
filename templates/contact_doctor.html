@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Doctor - Healthcare Portal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="dashboard-header">
+        <h1>👨‍⚕️ Contact Doctor</h1>
+        <a href="{{ url_for('dashboard') }}" class="logout-btn">Back to Dashboard</a>
+    </header>
+
+    <main class="container">
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-success">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="contact-layout">
+            <!-- Doctors List Section -->
+            <section class="doctors-section">
+                <h2>Available Doctors</h2>
+                <p class="section-description">Choose a doctor to send a message or schedule a consultation.</p>
+
+                <div class="doctors-grid">
+                    {% for doctor in doctors %}
+                    <div class="doctor-card">
+                        <div class="doctor-header">
+                            <h3>{{ doctor[1] }}</h3>
+                            <span class="specialty-badge">{{ doctor[2] }}</span>
+                        </div>
+                        
+                        <div class="doctor-info">
+                            <div class="info-item">
+                                <span class="icon">📧</span>
+                                <span>{{ doctor[3] }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="icon">📞</span>
+                                <span>{{ doctor[4] }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="icon">🕒</span>
+                                <span>{{ doctor[5] }}</span>
+                            </div>
+                        </div>
+
+                        <div class="doctor-bio">
+                            <p>{{ doctor[6] }}</p>
+                        </div>
+
+                        <div class="doctor-actions">
+                            <a href="{{ url_for('send_message', doctor_id=doctor[0]) }}" class="btn btn-primary">
+                                Send Message
+                            </a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <!-- Recent Messages Section -->
+            <section class="messages-section">
+                <div class="section-header">
+                    <h2>Recent Messages</h2>
+                    <a href="{{ url_for('message_history') }}" class="view-all-link">View All</a>
+                </div>
+
+                {% if recent_messages %}
+                <div class="recent-messages">
+                    {% for message in recent_messages %}
+                    <div class="message-preview">
+                        <div class="message-header">
+                            <strong>To: {{ message[8] }}</strong>
+                            <span class="message-time">{{ message[5].split(' ')[0] }}</span>
+                        </div>
+                        <p class="message-subject">{{ message[3] }}</p>
+                        <p class="message-excerpt">{{ message[4][:100] }}{% if message[4]|length > 100 %}...{% endif %}</p>
+                        <span class="message-status {{ message[6].lower() }}">{{ message[6] }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="empty-state">
+                    <p>No messages sent yet.</p>
+                    <p>Select a doctor above to send your first message.</p>
+                </div>
+                {% endif %}
+            </section>
+        </div>
+    </main>
+</body>
+</html>

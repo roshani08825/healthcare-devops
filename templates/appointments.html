@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Appointments - Healthcare Portal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="dashboard-header">
+        <h1>📅 My Appointments</h1>
+        <div>
+            <a href="{{ url_for('book_appointment') }}" class="btn" style="margin-right: 15px;">+ Book New Appointment</a>
+            <a href="{{ url_for('dashboard') }}" class="logout-btn">Back to Dashboard</a>
+        </div>
+    </header>
+
+    <main class="container">
+        {% if appointments %}
+            <div class="appointments-list">
+                {% for appointment in appointments %}
+                <div class="appointment-card">
+                    <div class="appointment-header">
+                        <h3>Dr. {{ appointment[2] }}</h3>
+                        <span class="status {{ appointment[6].lower() if appointment[6] else 'scheduled' }}">
+                            {{ appointment[6] if appointment[6] else 'Scheduled' }}
+                        </span>
+                    </div>
+                    
+                    <div class="appointment-details">
+                        <div class="detail-row">
+                            <span class="label">Date:</span>
+                            <span class="value">{{ appointment[3] }}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="label">Time:</span>
+                            <span class="value">{{ appointment[4] }}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="label">Reason:</span>
+                            <span class="value">{{ appointment[5] if appointment[5] else 'General Consultation' }}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="appointment-actions">
+                        <a href="{{ url_for('cancel_appointment', appointment_id=appointment[0]) }}" 
+                           class="btn-danger" 
+                           onclick="return confirm('Are you sure you want to cancel this appointment?')">
+                            Cancel Appointment
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <h2>No appointments scheduled</h2>
+                <p>You don't have any upcoming appointments.</p>
+                <a href="{{ url_for('book_appointment') }}" class="btn">Book Your First Appointment</a>
+            </div>
+        {% endif %}
+    </main>
+</body>
+</html>

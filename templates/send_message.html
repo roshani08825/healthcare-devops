@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send Message - Healthcare Portal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="dashboard-header">
+        <h1>✉️ Send Message</h1>
+        <a href="{{ url_for('contact_doctor') }}" class="logout-btn">Back to Doctors</a>
+    </header>
+
+    <div class="container">
+        <div class="message-form-container">
+            <div class="doctor-info-card">
+                <h3>Message to:</h3>
+                <div class="doctor-details">
+                    <h4>{{ doctor[1] }}</h4>
+                    <p class="specialty">{{ doctor[2] }}</p>
+                    <p class="contact-info">📧 {{ doctor[3] }} • 📞 {{ doctor[4] }}</p>
+                </div>
+            </div>
+
+            <form method="POST" class="message-form">
+                <div class="form-group">
+                    <label for="subject">Subject:</label>
+                    <input type="text" id="subject" name="subject" placeholder="Enter message subject" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Your Message:</label>
+                    <textarea id="message" name="message" rows="8" placeholder="Type your message here. Be specific about your medical concerns..." required></textarea>
+                </div>
+
+                <div class="form-note">
+                    <p>💡 <strong>Tip:</strong> Include relevant details like symptoms, duration, and any medications you're taking.</p>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                    <a href="{{ url_for('contact_doctor') }}" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

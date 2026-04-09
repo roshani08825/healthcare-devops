@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Message History - Healthcare Portal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="dashboard-header">
+        <h1>📨 Message History</h1>
+        <div>
+            <a href="{{ url_for('contact_doctor') }}" class="btn" style="margin-right: 15px;">Contact Doctor</a>
+            <a href="{{ url_for('dashboard') }}" class="logout-btn">Back to Dashboard</a>
+        </div>
+    </header>
+
+    <main class="container">
+        {% if messages %}
+            <div class="messages-history">
+                {% for message in messages %}
+                <div class="message-card">
+                    <div class="message-header">
+                        <div class="message-info">
+                            <h3>To: Dr. {{ message[8] }} ({{ message[9] }})</h3>
+                            <p class="message-subject">{{ message[3] }}</p>
+                        </div>
+                        <div class="message-meta">
+                            <span class="message-time">{{ message[5] }}</span>
+                            <span class="message-status {{ message[6].lower() }}">{{ message[6] }}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="message-content">
+                        <p>{{ message[4] }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <h2>No messages found</h2>
+                <p>You haven't sent any messages to doctors yet.</p>
+                <a href="{{ url_for('contact_doctor') }}" class="btn">Contact a Doctor</a>
+            </div>
+        {% endif %}
+    </main>
+</body>
+</html>

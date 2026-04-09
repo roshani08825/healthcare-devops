@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - Healthcare Portal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="dashboard-header">
+        <h1>👤 My Profile</h1>
+        <a href="{{ url_for('dashboard') }}" class="logout-btn">Back to Dashboard</a>
+    </header>
+
+    <main class="container">
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-success">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="profile-card">
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    {{ user[1][0].upper() }}
+                </div>
+                <h2>{{ user[1] }}</h2>
+                <p class="profile-email">{{ user[2] }}</p>
+            </div>
+
+            <div class="profile-details">
+                <div class="detail-section">
+                    <h3>Personal Information</h3>
+                    <div class="detail-row">
+                        <span class="label">Username:</span>
+                        <span class="value">{{ user[1] }}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label">Email:</span>
+                        <span class="value">{{ user[2] }}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label">Phone:</span>
+                        <span class="value">{{ user[3] if user[3] else 'Not provided' }}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label">Member Since:</span>
+                        <span class="value">Active User</span>
+                    </div>
+                </div>
+
+                <div class="profile-stats">
+                    <h3>Quick Stats</h3>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <span class="stat-number">0</span>
+                            <span class="stat-label">Appointments</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">0</span>
+                            <span class="stat-label">Prescriptions</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">Active</span>
+                            <span class="stat-label">Status</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-actions">
+                <a href="{{ url_for('edit_profile') }}" class="btn">Edit Profile</a>
+                <a href="{{ url_for('change_password') }}" class="btn btn-secondary">Change Password</a>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

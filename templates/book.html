@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book Appointment</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="dashboard-header">
+        <h1>📅 Book Appointment</h1>
+        <a href="{{ url_for('view_appointments') }}" class="logout-btn">View My Appointments</a>
+    </header>
+
+    <div class="container">
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-success">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <h2>Book an Appointment</h2>
+
+        <form method="POST" class="appointment-form">
+            <div class="form-group">
+                <label for="doctor">Doctor's Name:</label>
+                <input type="text" id="doctor" name="doctor" placeholder="Enter doctor's full name" required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="date">Date:</label>
+                    <input type="date" id="date" name="date" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="time">Time:</label>
+                    <input type="time" id="time" name="time" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="reason">Reason for Visit:</label>
+                <textarea id="reason" name="reason" rows="4" placeholder="Describe the reason for your appointment..."></textarea>
+            </div>
+
+            <button type="submit" class="btn">Book Appointment</button>
+        </form>
+
+        <a href="{{ url_for('dashboard') }}" style="display: block; text-align: center; margin-top: 20px; color: #0077b6; text-decoration: none;">
+            ← Back to Dashboard
+        </a>
+    </div>
+
+    <script>
+        // Set minimum date to today
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('date').min = today;
+    </script>
+</body>
+</html>
