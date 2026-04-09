@@ -52,7 +52,6 @@ pipeline {
                                 set "PYTHON_PATH=%%P\\python.exe"
                                 set "PYTHON_FOUND=1"
                                 !PYTHON_PATH! --version
-                                REM Add to PATH for subsequent steps
                                 set "PATH=%%P;%%P\\Scripts;!PATH!"
                                 goto :FOUND
                             )
@@ -62,23 +61,71 @@ pipeline {
                         if !PYTHON_FOUND! equ 1 (
                             echo.
                             echo ✓ Python found successfully: !PYTHON_PATH!
-                            echo ✓ Updated PATH for subsequent steps
                         ) else (
                             echo.
-                            echo ===== ERROR: Python NOT FOUND =====
-                            echo.
-                            echo Python is required but not installed on this Jenkins agent.
-                            echo.
-                            echo SOLUTION:
-                            echo 1. On the Jenkins server, install Python from:
-                            echo    https://www.python.org/downloads/
-                            echo 2. Run installer with "Add Python to PATH" checked
-                            echo 3. Restart Jenkins service: Restart-Service Jenkins
-                            echo 4. Re-run this pipeline
-                            echo.
-                            exit /b 1
+                            echo ⚠ Python not found - will auto-install in next stage
                         )
                     '''
+                }
+            }
+        }
+        
+        stage('Auto-Install Python') {
+            steps {
+                echo '=== Checking if Python needs installation ==='
+                script {
+                    def pythonExists = bat(script: '''
+                        @echo off
+                        if exist "C:\\Python311\\python.exe" (
+                            exit /b 0
+                        ) else (
+                            exit /b 1
+                        )
+                    ''', returnStatus: true)
+                    
+                    if (pythonExists != 0) {
+                        echo '=== Auto-installing Python 3.11 ==='
+                        bat '''
+                            @echo off
+                            setlocal enabledelayedexpansion
+                            
+                            set "PYTHON_INSTALLER=%TEMP%\\python-3.11.9-amd64.exe"
+                            set "PYTHON_URL=https://www.python.org/ftp/python/3.11.9/python-3.11.9-amd64.exe"
+                            
+                            echo Downloading Python from: !PYTHON_URL!
+                            powershell -NoProfile -Command "Write-Host 'Downloading Python...'; Invoke-WebRequest -Uri '!PYTHON_URL!' -OutFile '!PYTHON_INSTALLER!' -ErrorAction Stop; Write-Host 'Download complete'"
+                            
+                            if not exist "!PYTHON_INSTALLER!" (
+                                echo ERROR: Failed to download Python installer
+                                exit /b 1
+                            )
+                            
+                            echo Installing Python to C:\\Python311...
+                            "!PYTHON_INSTALLER!" /quiet /simple InstallAllUsers=1 PrependPath=1 TargetPath=C:\\Python311
+                            
+                            if errorlevel 1 (
+                                echo ERROR: Python installation failed with code !ERRORLEVEL!
+                                exit /b 1
+                            )
+                            
+                            timeout /t 5 /nobreak
+                            
+                            echo Verifying installation...
+                            if exist "C:\\Python311\\python.exe" (
+                                echo ✓ Python installed successfully
+                                C:\\Python311\\python.exe --version
+                                set "PATH=C:\\Python311;C:\\Python311\\Scripts;!PATH!"
+                            ) else (
+                                echo ERROR: Python installation verification failed
+                                exit /b 1
+                            )
+                            
+                            echo Cleaning up installer...
+                            del /f /q "!PYTHON_INSTALLER!"
+                        '''
+                    } else {
+                        echo '✓ Python already installed, skipping auto-install'
+                    }
                 }
             }
         }
