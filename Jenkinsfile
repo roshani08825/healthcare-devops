@@ -70,13 +70,11 @@ pipeline {
                             echo Python is required but not installed on this Jenkins agent.
                             echo.
                             echo SOLUTION:
-                            echo 1. On the Jenkins server, run as Administrator:
-                            echo    powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Invoke-WebRequest -Uri 'https://www.python.org/ftp/python/3.11.9/python-3.11.9-amd64.exe' -OutFile '$env:TEMP\python-installer.exe'; Start-Process -FilePath '$env:TEMP\python-installer.exe' -ArgumentList '/quiet /norestart PrependPath=1' -Wait"
-                            echo.
-                            echo 2. Restart Jenkins service:
-                            echo    Restart-Service Jenkins
-                            echo.
-                            echo 3. Re-run this pipeline
+                            echo 1. On the Jenkins server, install Python from:
+                            echo    https://www.python.org/downloads/
+                            echo 2. Run installer with "Add Python to PATH" checked
+                            echo 3. Restart Jenkins service: Restart-Service Jenkins
+                            echo 4. Re-run this pipeline
                             echo.
                             exit /b 1
                         )
