@@ -93,20 +93,21 @@ pipeline {
                             set "PYTHON_URL=https://www.python.org/ftp/python/3.11.9/python-3.11.9-amd64.exe"
                             
                             echo Downloading Python from: !PYTHON_URL!
-                            powershell -NoProfile -Command "Write-Host 'Downloading Python...'; Invoke-WebRequest -Uri '!PYTHON_URL!' -OutFile '!PYTHON_INSTALLER!' -ErrorAction Stop; Write-Host 'Download complete'"
+                            powershell -NoProfile -ExecutionPolicy Bypass -Command "Write-Host 'Downloading Python...'; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri '!PYTHON_URL!' -OutFile '!PYTHON_INSTALLER!' -ErrorAction Stop; Write-Host 'Download complete'"
                             
                             if not exist "!PYTHON_INSTALLER!" (
                                 echo ERROR: Failed to download Python installer
                                 exit /b 1
                             )
                             
-                            echo Installing Python to C:\\Python311...
-                            "!PYTHON_INSTALLER!" /quiet /simple InstallAllUsers=1 PrependPath=1 TargetPath=C:\\Python311
+                            echo File size: 
+                            dir "!PYTHON_INSTALLER!"
                             
-                            if errorlevel 1 (
-                                echo ERROR: Python installation failed with code !ERRORLEVEL!
-                                exit /b 1
-                            )
+                            echo Installing Python to C:\\Python311...
+                            start /wait "!PYTHON_INSTALLER!" /quiet /simple PrependPath=1 InstallAllUsers=1 TargetPath=C:\\Python311
+                            
+                            set "INSTALL_EXIT=!ERRORLEVEL!"
+                            echo Installation exit code: !INSTALL_EXIT!
                             
                             timeout /t 5 /nobreak
                             
@@ -116,12 +117,14 @@ pipeline {
                                 C:\\Python311\\python.exe --version
                                 set "PATH=C:\\Python311;C:\\Python311\\Scripts;!PATH!"
                             ) else (
-                                echo ERROR: Python installation verification failed
+                                echo WARNING: Python not in default location, searching...
+                                dir C:\\Python311\\ 2>nul || echo C:\\Python311 not found
+                                dir "C:\\Program Files\\Python311\\" 2>nul || echo Program Files location not found
                                 exit /b 1
                             )
                             
                             echo Cleaning up installer...
-                            del /f /q "!PYTHON_INSTALLER!"
+                            del /f /q "!PYTHON_INSTALLER!" 2>nul
                         '''
                     } else {
                         echo '✓ Python already installed, skipping auto-install'
