@@ -24,33 +24,61 @@ pipeline {
             steps {
                 echo '=== Locating Python ==='
                 script {
-                    try {
-                        bat '''
-                            @echo off
-                            where python >nul 2>nul
-                            if errorlevel 1 (
-                                echo Python not found in PATH
-                                echo Checking common installation locations...
-                                
-                                if exist "C:\\Python311\\python.exe" (
-                                    echo Found Python at C:\\Python311
-                                    set "PATH=C:\\Python311;%PATH%"
-                                ) else if exist "C:\\Python310\\python.exe" (
-                                    echo Found Python at C:\\Python310
-                                    set "PATH=C:\\Python310;%PATH%"
-                                ) else if exist "C:\\Program Files\\Python311\\python.exe" (
-                                    echo Found Python at C:\\Program Files\\Python311
-                                    set "PATH=C:\\Program Files\\Python311;%PATH%"
-                                ) else (
-                                    echo ERROR: Python not found!
-                                    exit /b 1
-                                )
-                            )
+                    bat '''
+                        @echo off
+                        setlocal enabledelayedexpansion
+                        
+                        set "PYTHON_FOUND=0"
+                        
+                        REM Check if python is already in PATH
+                        where python >nul 2>nul
+                        if errorlevel 0 (
+                            set "PYTHON_FOUND=1"
+                            echo Found Python in PATH
                             python --version
-                        '''
-                    } catch (Exception e) {
-                        error("Failed to locate Python: ${e.message}")
-                    }
+                            goto :EOF
+                        )
+                        
+                        REM Checking common installation locations
+                        echo Python not found in PATH, checking common locations...
+                        
+                        REM Check multiple common Python installation locations
+                        for %%P in (
+                            "C:\\Python311"
+                            "C:\\Python310"
+                            "C:\\Python39"
+                            "C:\\Program Files\\Python311"
+                            "C:\\Program Files\\Python310"
+                            "C:\\Program Files\\Python39"
+                            "C:\\Users\\!USERNAME!\\AppData\\Local\\Programs\\Python\\Python311"
+                            "C:\\Users\\!USERNAME!\\AppData\\Local\\Programs\\Python\\Python310"
+                        ) do (
+                            if exist "%%P\\python.exe" (
+                                echo Found Python at %%P
+                                set "PATH=%%P;%%P\\Scripts;!PATH!"
+                                set "PYTHON_FOUND=1"
+                                python --version
+                                goto :FOUND
+                            )
+                        )
+                        
+                        :FOUND
+                        if !PYTHON_FOUND! equ 0 (
+                            echo.
+                            echo ===== ERROR: Python NOT FOUND =====
+                            echo.
+                            echo Python is required but not installed on this Jenkins agent.
+                            echo.
+                            echo Please install Python on the Jenkins server:
+                            echo 1. Download from: https://www.python.org/downloads/
+                            echo 2. Run installer with "Add Python to PATH" checked
+                            echo 3. Restart Jenkins service
+                            echo.
+                            echo Or specify Python location in Jenkinsfile PYTHON_HOME variable
+                            echo.
+                            exit /b 1
+                        )
+                    '''
                 }
             }
         }
