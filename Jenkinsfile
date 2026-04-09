@@ -72,18 +72,26 @@ pipeline {
         
         stage('Auto-Install Python') {
             steps {
-                echo '=== Checking if Python needs installation ==='
+                echo '=== Checking if Python installation is complete ==='
                 script {
                     def pythonExists = bat(script: '''
                         @echo off
-                        if exist "C:\\Python311\\python.exe" (
-                            exit /b 0
-                        ) else (
-                            exit /b 1
-                        )
+                        setlocal enabledelayedexpansion
+                        
+                        REM Check if Python exists in any common location
+                        if exist "C:\\Python311\\python.exe" exit /b 0
+                        if exist "C:\\Python310\\python.exe" exit /b 0
+                        if exist "C:\\Program Files\\Python311\\python.exe" exit /b 0
+                        if exist "C:\\Program Files\\Python310\\python.exe" exit /b 0
+                        
+                        REM Try to run python command
+                        python --version >nul 2>&1
+                        exit /b !ERRORLEVEL!
                     ''', returnStatus: true)
                     
-                    if (pythonExists != 0) {
+                    if (pythonExists == 0) {
+                        echo '✓ Python already installed, skipping auto-install'
+                    } else {
                         echo '=== Auto-installing Python 3.11 ==='
                         bat '''
                             @echo off
@@ -93,41 +101,33 @@ pipeline {
                             set "PYTHON_URL=https://www.python.org/ftp/python/3.11.9/python-3.11.9-amd64.exe"
                             
                             echo Downloading Python from: !PYTHON_URL!
-                            powershell -NoProfile -ExecutionPolicy Bypass -Command "Write-Host 'Downloading Python...'; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri '!PYTHON_URL!' -OutFile '!PYTHON_INSTALLER!' -ErrorAction Stop; Write-Host 'Download complete'"
+                            powershell -NoProfile -ExecutionPolicy Bypass -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri '!PYTHON_URL!' -OutFile '!PYTHON_INSTALLER!' -ErrorAction Stop"
                             
                             if not exist "!PYTHON_INSTALLER!" (
                                 echo ERROR: Failed to download Python installer
                                 exit /b 1
                             )
                             
-                            echo File size: 
-                            dir "!PYTHON_INSTALLER!"
-                            
-                            echo Installing Python to C:\\Python311...
-                            start /wait "!PYTHON_INSTALLER!" /quiet /simple PrependPath=1 InstallAllUsers=1 TargetPath=C:\\Python311
-                            
-                            set "INSTALL_EXIT=!ERRORLEVEL!"
-                            echo Installation exit code: !INSTALL_EXIT!
+                            echo Installing Python...
+                            "!PYTHON_INSTALLER!" /quiet /simple PrependPath=1 InstallAllUsers=1
                             
                             timeout /t 5 /nobreak
                             
                             echo Verifying installation...
-                            if exist "C:\\Python311\\python.exe" (
-                                echo ✓ Python installed successfully
-                                C:\\Python311\\python.exe --version
-                                set "PATH=C:\\Python311;C:\\Python311\\Scripts;!PATH!"
+                            if exist "C:\\Program Files\\Python311\\python.exe" (
+                                echo ✓ Python installed successfully at C:\\Program Files\\Python311
+                                "C:\\Program Files\\Python311\\python.exe" --version
+                            ) else if exist "C:\\Python311\\python.exe" (
+                                echo ✓ Python installed successfully at C:\\Python311
+                                "C:\\Python311\\python.exe" --version
                             ) else (
-                                echo WARNING: Python not in default location, searching...
-                                dir C:\\Python311\\ 2>nul || echo C:\\Python311 not found
-                                dir "C:\\Program Files\\Python311\\" 2>nul || echo Program Files location not found
+                                echo ERROR: Python installation failed
                                 exit /b 1
                             )
                             
                             echo Cleaning up installer...
                             del /f /q "!PYTHON_INSTALLER!" 2>nul
                         '''
-                    } else {
-                        echo '✓ Python already installed, skipping auto-install'
                     }
                 }
             }
@@ -143,15 +143,18 @@ pipeline {
                     REM Try different possible Python locations
                     set "PYTHON_EXE=python"
                     
-                    if exist "C:\\Python311\\python.exe" (
+                    if exist "C:\\Program Files\\Python311\\python.exe" (
+                        set "PYTHON_EXE=C:\\Program Files\\Python311\\python.exe"
+                    ) else if exist "C:\\Python311\\python.exe" (
                         set "PYTHON_EXE=C:\\Python311\\python.exe"
                     ) else if exist "C:\\Python310\\python.exe" (
                         set "PYTHON_EXE=C:\\Python310\\python.exe"
-                    ) else if exist "C:\\Program Files\\Python311\\python.exe" (
-                        set "PYTHON_EXE=C:\\Program Files\\Python311\\python.exe"
+                    ) else if exist "C:\\Program Files\\Python310\\python.exe" (
+                        set "PYTHON_EXE=C:\\Program Files\\Python310\\python.exe"
                     )
                     
                     echo Using Python: !PYTHON_EXE!
+                    !PYTHON_EXE! --version
                     
                     REM Remove old venv if exists
                     if exist "%VENV_DIR%" (
@@ -168,7 +171,7 @@ pipeline {
                         exit /b 1
                     )
                     
-                    echo ✓ Virtual environment created successfully
+                    echo ✓ Virtual environment created successfully at: %VENV_DIR%
                 '''
             }
         }
